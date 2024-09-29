@@ -1,18 +1,14 @@
 ---
-- name: Update and upgrade Debian server
+- name: Update and upgrade apt packages
   hosts: all
-  become: yes  # Run as sudo/root
+
   tasks:
-    - name: Update package list
-      apt:
-        update_cache: yes
+    - name: Update packages with apt
+      when: ansible_pkg_mgr == 'apt'
+      ansible.builtin.apt:
+        update_cache: true
 
-    - name: Upgrade all packages
-      apt:
+    - name: Upgrade packages with apt
+      when: ansible_pkg_mgr == 'apt'
+      ansible.builtin.apt:
         upgrade: dist
-
-    - name: Reboot if required
-      reboot:
-        msg: "Rebooting after upgrade if needed"
-        reboot_timeout: 600
-      when: ansible_facts['reboot_required'] | default(false)
