@@ -1,6 +1,12 @@
-- hosts: all
-  name: Update and upgrade apt packages
-  become: true
-  apt:
-    update_cache: yes
-    upgrade: 'yes'
+---
+- name: Update and upgrade Debian server
+  hosts: all
+  become: yes  # Run as sudo/root
+  tasks:
+    - name: Update package list
+      apt:
+        update_cache: yes
+
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist
