@@ -23,10 +23,18 @@
         groups: sudo
         append: yes
 
-    - name: Allow passwordless sudo for the new user
+    # - name: Allow passwordless sudo for the new user
+    #   lineinfile:
+    #     path: /etc/sudoers
+    #     regexp: "^{{ lookup('env', 'user') }} ALL=(ALL) NOPASSWD:ALL"
+    #     line: "{{ lookup('env', 'user') }} ALL=(ALL) NOPASSWD:ALL"
+    #     state: present
+    #     validate: "visudo -cf %s"
+
+    - name: Ensure sudo group can use sudo without password
       lineinfile:
         path: /etc/sudoers
-        regexp: "^{{ lookup('env', 'user') }} ALL=(ALL) NOPASSWD:ALL"
-        line: "{{ lookup('env', 'user') }} ALL=(ALL) NOPASSWD:ALL"
+        regexp: "^%sudo   ALL=(ALL:ALL) ALL"
+        line: "%sudo   ALL=(ALL:ALL) NOPASSWD: ALL"
         state: present
         validate: "visudo -cf %s"
