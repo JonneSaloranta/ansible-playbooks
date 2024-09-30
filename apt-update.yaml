@@ -2,7 +2,6 @@
 - name: Update and upgrade Ubuntu/Debian servers
   hosts: all
   become: true  # Run as sudo/root
-  become_method: sudo
 
   tasks:
     - name: Update package list
