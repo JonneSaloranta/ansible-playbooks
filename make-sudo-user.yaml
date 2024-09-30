@@ -20,7 +20,7 @@
     - name: Allow passwordless sudo for the new user
       lineinfile:
         path: /etc/sudoers
-        regexp: "^{{ user }} ALL=\(ALL\) NOPASSWD:ALL"
+        regexp: "^{{ user }} ALL=(ALL) NOPASSWD:ALL"
         line: "{{ user }} ALL=(ALL) NOPASSWD:ALL"
         state: present
         validate: "visudo -cf %s"
