@@ -1,1 +1,49 @@
+---
+- name: Install Docker on Debian
+  hosts: all
+  become: true # Run as sudo
+  tasks:
+    - name: Update apt package list
+      apt:
+        update_cache: yes
 
+    - name: Install required packages for Docker installation
+      apt:
+        name:
+          - ca-certificates
+          - curl
+        state: present
+        update_cache: yes
+
+    - name: Create /etc/apt/keyrings directory
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+    - name: Add Docker's official GPG key
+      get_url:
+        url: https://download.docker.com/linux/debian/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: "0644"
+
+    - name: Add Docker's repository to apt sources
+      copy:
+        content: |
+          deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable
+        dest: /etc/apt/sources.list.d/docker.list
+
+    - name: Update apt package list after adding Docker repository
+      apt:
+        update_cache: yes
+
+    - name: Install Docker CE, Docker CLI, containerd, and plugins
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: yes
