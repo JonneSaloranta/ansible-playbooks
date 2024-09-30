@@ -6,7 +6,13 @@
     - name: Update package list
       apt:
         update_cache: yes
+      retries: 5
+      delay: 10
+      until: result is succeeded
 
     - name: Upgrade all packages
       apt:
         upgrade: dist
+      retries: 5
+      delay: 10
+      until: result is succeeded
