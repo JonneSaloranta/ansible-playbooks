@@ -5,22 +5,22 @@
   tasks:
     - name: Create a new user
       user:
-        name: "{{ new_user }}"
-        password: "{{ 'your_password_here' | password_hash('sha512') }}"
+        name: "{{ user }}"
+        password: "{{ 'password' | password_hash('sha512') }}"
         shell: /bin/bash
         state: present
         createhome: yes
 
     - name: Add the user to the sudo group
       user:
-        name: "{{ new_user }}"
+        name: "{{ user }}"
         groups: sudo
         append: yes
 
     - name: Allow passwordless sudo for the new user
       lineinfile:
         path: /etc/sudoers
-        regexp: "^{{ new_user }} ALL=\(ALL\) NOPASSWD:ALL"
-        line: "{{ new_user }} ALL=(ALL) NOPASSWD:ALL"
+        regexp: "^{{ user }} ALL=\(ALL\) NOPASSWD:ALL"
+        line: "{{ user }} ALL=(ALL) NOPASSWD:ALL"
         state: present
         validate: "visudo -cf %s"
