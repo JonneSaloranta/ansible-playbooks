@@ -3,30 +3,25 @@
   hosts: all
   become: true
 
-  environment:
-    user: $user
-    password: $password
-
-
   tasks:
     - name: Create a new user
       user:
-        name: "{{ user }}"
-        password: "{{ 'password' | password_hash('sha512') }}"
+        name: "{{ lookup('env', 'user') }}"
+        password: "{{ lookup('env', 'password') | password_hash('sha512') }}"
         shell: /bin/bash
         state: present
         createhome: yes
 
     - name: Add the user to the sudo group
       user:
-        name: "{{ user }}"
+        name: "{{ lookup('env', 'user') }}"
         groups: sudo
         append: yes
 
     - name: Allow passwordless sudo for the new user
       lineinfile:
         path: /etc/sudoers
-        regexp: "^{{ user }} ALL=(ALL) NOPASSWD:ALL"
-        line: "{{ user }} ALL=(ALL) NOPASSWD:ALL"
+        regexp: "^{{ lookup('env', 'user') }} ALL=(ALL) NOPASSWD:ALL"
+        line: "{{ lookup('env', 'user') }} ALL=(ALL) NOPASSWD:ALL"
         state: present
         validate: "visudo -cf %s"
