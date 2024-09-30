@@ -27,7 +27,7 @@
         owner: root
         group: root
         mode: "0644"
-      when: not ansible_facts['os_distribution'] in ["Debian", "Ubuntu"]
+      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Restart Fail2Ban to apply configuration
       service:
