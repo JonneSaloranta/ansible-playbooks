@@ -1,20 +1,15 @@
 ---
 - name: Update and upgrade Debian server
   hosts: all
-  become: yes  # Run as sudo/root
+  become: true  # Run as sudo/root
+
   tasks:
     - name: Update package list
       apt:
         update_cache: yes
-      register: update_result
-      retries: 5
-      delay: 10
-      until: update_result is succeeded
+        lock_timeout: 180  # Increase timeout for lock handling
 
     - name: Upgrade all packages
       apt:
         upgrade: dist
-      register: upgrade_result
-      retries: 5
-      delay: 10
-      until: upgrade_result is succeeded
+        lock_timeout: 180  # Increase timeout for lock handling
