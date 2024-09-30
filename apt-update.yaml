@@ -6,13 +6,15 @@
     - name: Update package list
       apt:
         update_cache: yes
+      register: update_result
       retries: 5
       delay: 10
-      until: result is succeeded
+      until: update_result is succeeded
 
     - name: Upgrade all packages
       apt:
         upgrade: dist
+      register: upgrade_result
       retries: 5
       delay: 10
-      until: result is succeeded
+      until: upgrade_result is succeeded
