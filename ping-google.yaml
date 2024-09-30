@@ -1,0 +1,12 @@
+---
+- name: Ping Google.com
+  hosts: all
+  become: false  # No need for sudo/root privileges
+  tasks:
+    - name: Ping google.com
+      command: ping -c 4 google.com
+      register: ping_result
+
+    - name: Display ping result
+      debug:
+        var: ping_result.stdout
