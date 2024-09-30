@@ -1,5 +1,5 @@
 ---
-- name: Update and upgrade Debian server
+- name: Update and upgrade Ubuntu/Debian servers
   hosts: all
   become: true  # Run as sudo/root
 
@@ -7,7 +7,9 @@
     - name: Update package list
       apt:
         update_cache: yes
+      when: ansible_distribution == "Ubuntu"
 
     - name: Upgrade all packages
       apt:
         upgrade: dist
+      when: ansible_distribution == "Ubuntu"
